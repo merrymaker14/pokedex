@@ -1,49 +1,54 @@
 import React, { Component } from 'react'
 import PokemonCard from './PokemonCard'
-import axios from 'axios';
+
+import { inject, observer } from 'mobx-react';
+import { toJS } from 'mobx';
 
 import Pagination from '../layout/Pagination';
 
-export default class PokemonList extends Component {
+@inject("store")
+@observer
+class PokemonList extends Component {
     state = {
-        limit: 10,
-        count: 964,
-        pokemon: null,
-        filterPokemon: null
+        filterPokemon: []
     };
 
-    componentDidMount () {
-        this.getPokemon(this.state.limit, (this.props.match.params.id - 1) * this.state.limit);
-    }
-    
-    componentDidUpdate (prevProps, prevState) {
-        if (prevState.limit !== this.state.limit || prevProps.match.params.id !== this.props.match.params.id)
-            this.getPokemon(this.state.limit, (this.props.match.params.id - 1) * this.state.limit);
+    componentWillMount() {
+        this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
     }
 
-    getPokemon = (limit, offset) => {
-        axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
-             .then(res => 
-                this.setState({ count: res.data['count'],
-                                pokemon: res.data['results'],
-                                filterPokemon: res.data['results'] }))
+    componentDidMount () {
+        setTimeout(() => {
+            this.setState({ filterPokemon: toJS(this.props.store.pokemon) });
+        }, 500)
+    }
+
+    componentDidUpdate (prevProps) {
+        if (prevProps.id != this.props.id) {
+            this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
+            let delay = this.props.store.limit == 50 ? 1000 : 500;
+            setTimeout(() => {
+                this.setState({ filterPokemon: toJS(this.props.store.pokemon) });
+            }, delay)
+        }
     }
 
     render() {
         return (
             <div>
-                {this.state.pokemon ? (
+                {this.state.filterPokemon ? (
                 <div>
-                    <form class="form-inline md-form form-sm active-pink active-pink-2 mt-2 float-left">
-                        <i class="fas fa-search" aria-hidden="true"></i>
-                        <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Pokemon" aria-label="Pokemon" onChange={(e) => this.filterList(e)} />
-                        <select class="browser-default custom-select mt-2 ml-3 w-75" onChange={(e) => this.chooseLimit(e)}>>
+                    <form className="form-inline md-form form-sm active-pink active-pink-2 mt-2 float-left">
+                        <i className="fas fa-search" aria-hidden="true"></i>
+                        <select className="browser-default custom-select ml-3 w-75" onChange={(e) => this.chooseLimit(e)}>>
                             <option disabled>limit</option>
                             <option selected value="10">10</option>
                             <option value="20">20</option>
                             <option value="50">50</option>
-                            </select>
+                        </select>
+                        <input className="form-control form-control-sm mt-2 ml-3 w-75" type="text" placeholder="Pokemon" aria-label="Pokemon" onChange={(e) => this.filterList(e)} />
                     </form>
+                    <Pagination id={this.props.store.id} count={this.props.store.count} limit={this.props.store.limit} />
                     <div className="row">
                         {this.state.filterPokemon.map(pokemon => (
                         <PokemonCard
@@ -57,14 +62,12 @@ export default class PokemonList extends Component {
                 ) : (
                 <div>Loading</div>
                 )}
-                <Pagination id={this.props.match.params.id} count={this.state.count} limit={this.state.limit} />
             </div>
         )
     }
 
     filterList(e) {
-        console.log(this.state.pokemon)
-        var data = this.state.pokemon;
+        var data = this.props.store.pokemon;
         data = data.filter(item => {
             return item.name.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
         });
@@ -72,8 +75,13 @@ export default class PokemonList extends Component {
     }
 
     chooseLimit(e) {
-        this.setState({limit: e.target.value});
-        console.log(this.state.limit);
+        this.props.store.setLimit(e.target.value);
+        this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
+        let delay = this.props.store.limit == 50 ? 1000 : 500;
+        setTimeout(() => {
+            this.setState({ filterPokemon: toJS(this.props.store.pokemon) });
+        }, delay)
     }
-    
 }
+
+export default PokemonList;

@@ -68,28 +68,36 @@ export default class Pokemon extends Component {
     let { hp, attack, defense, speed, specialAttack, specialDefense } = '';
 
     pokemonRes.data.stats.map(stat => {
+      let variable = '';
       switch (stat.stat.name) {
         case 'hp':
           hp = stat['base_stat'];
+          variable = 'hp';
           break;
         case 'attack':
           attack = stat['base_stat'];
+          variable = 'attack';
           break;
         case 'defense':
           defense = stat['base_stat'];
+          variable = 'defense';
           break;
         case 'speed':
           speed = stat['base_stat'];
+          variable = 'speed';
           break;
         case 'special-attack':
           specialAttack = stat['base_stat'];
+          variable = 'special';
           break;
         case 'special-defense':
           specialDefense = stat['base_stat'];
+          variable = 'special';
           break;
         default:
           break;
       }
+      return [variable];
     });
 
     // Convert Decimeters to Feet... The + 0.0001 * 100 ) / 100 is for rounding to two decimal places :)
@@ -465,7 +473,7 @@ export default class Pokemon extends Component {
           </div>
           <div class="card-footer text-muted">
             Data From{' '}
-            <a href="https://pokeapi.co/" target="_blank" className="card-link">
+            <a href="https://pokeapi.co/" target="_blank" rel="noopener noreferrer" className="card-link">
               PokeAPI.co
             </a>
           </div>
