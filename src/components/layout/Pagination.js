@@ -32,7 +32,7 @@ class Pagination extends React.Component {
         }
 
         return (
-            <div class="text-center">
+            <div className="text-center">
                 <nav aria-label="Page navigation example" style={{display: 'inline-block'}}>
                     <ul className="pagination">
                         {id === 1 ? (

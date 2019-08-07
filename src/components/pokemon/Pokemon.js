@@ -1,4 +1,3 @@
-    
 import React, { Component } from 'react';
 import Axios from 'axios';
 
@@ -53,6 +52,8 @@ export default class Pokemon extends Component {
   };
 
   async componentDidMount() {
+    console.log('fgfgf')
+
     const { pokemonIndex } = this.props.match.params;
 
     // Urls for pokemon information

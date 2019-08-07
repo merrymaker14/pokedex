@@ -23,7 +23,7 @@ import backgroundImage from './pattern.png';
             <Switch>
               <Route exact path='/' render={() => <Redirect to='page/1' />} />
               <Route exact path='/page/:id' component={Dashboard} />
-              <Route exact path="/pokemon/:pokemonIndex" component={Pokemon} />
+              <Route exact path='/pokemon/:pokemonIndex' component={Pokemon} />
             </Switch>
           </div>
         </div>
