@@ -17,7 +17,7 @@ class Pagination extends React.Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (prevProps.limit != this.props.limit) {
+        if (prevProps.limit !== this.props.limit) {
             let { count, limit } = this.props;
             const pages = Math.ceil(count / limit);
             this.setState({pages});

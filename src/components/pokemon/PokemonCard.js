@@ -50,7 +50,6 @@ export default class PokemonCard extends Component {
         const { name, url } = this.props;
     
         const pokemonIndex = url.split('/')[url.split('/').length - 2];
-        //const imageUrl = `./sprites/pokemon/${pokemonIndex}.png`;
         const imageUrl = `https://github.com/PokeAPI/sprites/blob/master/sprites/pokemon/${pokemonIndex}.png?raw=true`;
     
         this.setState({ name, imageUrl, pokemonIndex });
@@ -65,6 +64,7 @@ export default class PokemonCard extends Component {
                         {this.state.imageLoading ? (
                             <img
                                 src={spinner}
+                                alt=""
                                 style={{ width: '5em', height: '5em' }}
                                 className="card-img-top rounded mx-auto d-block mt-2"
                             />

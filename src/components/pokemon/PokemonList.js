@@ -24,7 +24,7 @@ class PokemonList extends Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (prevProps.id != this.props.id) {
+        if (prevProps.id !== this.props.id) {
             this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
         }
     }
@@ -62,6 +62,10 @@ class PokemonList extends Component {
         )
     }
 
+    /**
+     * Filter list of pokemons by name
+     * @param {event} e Event data
+     */
     filterList(e) {
         var data = toJS(this.props.store.pokemon);
         data = data.filter(item => {
@@ -70,6 +74,10 @@ class PokemonList extends Component {
         this.props.store.setFilterPokemon(data);
     }
 
+    /**
+     * Choose of pokemons limit on page
+     * @param {event} e Event data
+     */
     chooseLimit(e) {
         this.props.store.setLimit(e.target.value);
         this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
