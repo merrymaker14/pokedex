@@ -13,6 +13,7 @@ class Store {
     @observable limit = 10;
     @observable count = 964;
     @observable pokemon = null;
+    @observable filterPokemon = null;
 
     @action setId(id) {
         this.id = id;
@@ -22,12 +23,17 @@ class Store {
         this.limit = limit;
     }
 
+    @action setFilterPokemon(filterPokemon) {
+        this.filterPokemon = filterPokemon;
+    }
+
     @action getPokemon(limit, offset) {
         axios.get(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)
              .then(res => {
                 runInAction(() => {
                     this.count = res.data['count'];
                     this.pokemon = res.data['results'];
+                    this.setFilterPokemon(this.pokemon);
                 })
              })
     }

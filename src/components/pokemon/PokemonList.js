@@ -26,17 +26,13 @@ class PokemonList extends Component {
     componentDidUpdate (prevProps) {
         if (prevProps.id != this.props.id) {
             this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
-            let delay = this.props.store.limit == 50 ? 1000 : 500;
-            setTimeout(() => {
-                this.setState({ filterPokemon: toJS(this.props.store.pokemon) });
-            }, delay)
         }
     }
 
     render() {
         return (
             <div>
-                {this.state.filterPokemon ? (
+                {toJS(this.props.store.filterPokemon) ? (
                 <div>
                     <form className="form-inline md-form form-sm active-pink active-pink-2 mt-2 float-left">
                         <i className="fas fa-search" aria-hidden="true"></i>
@@ -50,7 +46,7 @@ class PokemonList extends Component {
                     </form>
                     <Pagination id={this.props.store.id} count={this.props.store.count} limit={this.props.store.limit} />
                     <div className="row">
-                        {this.state.filterPokemon.map(pokemon => (
+                        {toJS(this.props.store.filterPokemon).map(pokemon => (
                         <PokemonCard
                             key={pokemon.name}
                             name={pokemon.name}
@@ -67,20 +63,16 @@ class PokemonList extends Component {
     }
 
     filterList(e) {
-        var data = this.props.store.pokemon;
+        var data = toJS(this.props.store.pokemon);
         data = data.filter(item => {
             return item.name.toLowerCase().search(e.target.value.toLowerCase()) !== -1;
         });
-        this.setState({filterPokemon: data});
+        this.props.store.setFilterPokemon(data);
     }
 
     chooseLimit(e) {
         this.props.store.setLimit(e.target.value);
         this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
-        let delay = this.props.store.limit == 50 ? 1000 : 500;
-        setTimeout(() => {
-            this.setState({ filterPokemon: toJS(this.props.store.pokemon) });
-        }, delay)
     }
 }
 
