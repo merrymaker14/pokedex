@@ -25,9 +25,7 @@ class Pagination extends React.Component {
     }
 
     render () {
-        let { id } = this.props.match.params.id;
-
-        if (this.state.pages !== 0 && id > this.state.pages) {
+        if (this.state.pages !== 0 && this.props.match.params.id > this.state.pages) {
             return <Redirect to={`/page/${this.state.pages}`} />
         }
 
@@ -35,7 +33,7 @@ class Pagination extends React.Component {
             <div className="text-center">
                 <nav aria-label="Page navigation example" style={{display: 'inline-block'}}>
                     <ul className="pagination">
-                        {id === 1 ? (
+                        {this.props.match.params.id == 1 ? (
                         <React.Fragment>
                             <li className="page-item active">
                                 <div className="page-link" ria-label="Previous">
@@ -56,12 +54,12 @@ class Pagination extends React.Component {
                                 </div>
                             </li>
                             </Link>
-                            <Link to={`/page/${id-1}`}>
+                            <Link to={`/page/${this.props.match.params.id-1}`}>
                             <li className="page-item">
                                 <div className="page-link">←</div>
                             </li>
                             </Link>
-                        </React.Fragment>)} {id === this.state.pages ? (
+                        </React.Fragment>)} {this.props.match.params.id == this.state.pages ? (
                         <React.Fragment>
                             <li className="page-item active">
                                 <div className="page-link">→</div>
@@ -74,7 +72,7 @@ class Pagination extends React.Component {
                             </li>
                         </React.Fragment>) : (
                         <React.Fragment>
-                            <Link to={`/page/${id+1}`}>
+                            <Link to={`/page/${parseInt(this.props.match.params.id)+1}`}>
                             <li className="page-item">
                                 <div className="page-link">→</div>
                             </li>
