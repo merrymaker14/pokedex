@@ -9,19 +9,10 @@ import { observable, action, runInAction } from 'mobx';
 import { Provider } from 'mobx-react';
 
 class Store {
-    @observable id = 1;
     @observable limit = 10;
     @observable count = 964;
     @observable pokemon = null;
-    @observable filterPokemon = null;
-
-    /**
-     * Set of id
-     * @param {number} id Number of page
-     */
-    @action setId(id) {
-        this.id = id;
-    }
+    @observable filterPokemon = null
 
     /**
      * Set of limit

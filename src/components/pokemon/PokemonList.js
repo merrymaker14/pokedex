@@ -3,6 +3,7 @@ import PokemonCard from './PokemonCard'
 
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
+import { withRouter } from 'react-router-dom';
 
 import Pagination from '../layout/Pagination';
 
@@ -14,7 +15,7 @@ class PokemonList extends Component {
     };
 
     componentWillMount() {
-        this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
+        this.props.store.getPokemon(this.props.store.limit, (this.props.match.params.id - 1) * this.props.store.limit);
     }
 
     componentDidMount () {
@@ -24,8 +25,8 @@ class PokemonList extends Component {
     }
 
     componentDidUpdate (prevProps) {
-        if (prevProps.id !== this.props.id) {
-            this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.props.store.getPokemon(this.props.store.limit, (this.props.match.params.id - 1) * this.props.store.limit);
         }
     }
 
@@ -44,7 +45,7 @@ class PokemonList extends Component {
                         </select>
                         <input className="form-control form-control-sm mt-2 ml-3 w-75" type="text" placeholder="Pokemon" aria-label="Pokemon" onChange={(e) => this.filterList(e)} />
                     </form>
-                    <Pagination id={this.props.store.id} count={this.props.store.count} limit={this.props.store.limit} />
+                    <Pagination count={this.props.store.count} limit={this.props.store.limit} />
                     <div className="row">
                         {toJS(this.props.store.filterPokemon).map(pokemon => (
                         <PokemonCard
@@ -80,8 +81,8 @@ class PokemonList extends Component {
      */
     chooseLimit(e) {
         this.props.store.setLimit(e.target.value);
-        this.props.store.getPokemon(this.props.store.limit, (this.props.store.id - 1) * this.props.store.limit);
+        this.props.store.getPokemon(this.props.store.limit, (this.props.match.params.id - 1) * this.props.store.limit);
     }
 }
 
-export default PokemonList;
+export default withRouter(PokemonList);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 
 class Pagination extends React.Component {
     constructor(props) {
@@ -25,7 +25,7 @@ class Pagination extends React.Component {
     }
 
     render () {
-        let { id } = this.props;
+        let { id } = this.props.match.params.id;
 
         if (this.state.pages !== 0 && id > this.state.pages) {
             return <Redirect to={`/page/${this.state.pages}`} />
@@ -96,4 +96,4 @@ class Pagination extends React.Component {
     }
 }
 
-export default Pagination;
+export default withRouter(Pagination);
